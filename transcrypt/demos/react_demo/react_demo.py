@@ -13,21 +13,22 @@ def render(react_element, destination_id, callback=lambda: None):
 # Create a component
 
 
-Hello = React.createClass({
-    'displayName': 'Hello',
+class Hello(object, React.Component):
+    def __init__(self):
+        self.state = {'counter': 0}
 
-    'getInitialState': lambda: {'counter': 0},
+    def render(self):
+        return h('div', { 'className': 'maindiv' },
+            h('h1', None, 'Hello ', self.props['name']),
+            h('p', None, 'Lorem ipsum dolor sit amet.'),
+            h('p', None, 'Counter: ', self.state['counter'])
+        )
 
-    'updateCounter': lambda: (this.setState({'counter': this.state['counter']+1})),
+    def updateCounter(self):
+        self.setState({ 'counter': self.state['counter'] + 1 })
 
-    'componentDidMount': lambda: (setInterval(this.updateCounter, 1000)),
-
-    'render': lambda: h('div', {'className': 'maindiv'},
-                          h('h1', None, 'Hello ', this.props['name']),
-                          h('p', None, 'Lorem ipsum dolor sit ame.'),
-                          h('p', None, 'Counter: ', this.state['counter'])
-                        )
-})
+    def componentDidMount(self):
+        setInterval(self.updateCounter, 1000)
 
 
 # Render the component in a 'container' div
